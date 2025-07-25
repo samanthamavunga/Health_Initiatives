@@ -5,9 +5,17 @@ import {
   X,
   LayoutDashboard,
   FileText,
+  DollarSign,
+  CalendarCheck,
+  TrendingUp,
+  MessageSquareText,
+  BookOpen,
+  User,
+  HelpCircle,
   LogOut,
   ChevronLeft,
-  ChevronRight,
+  GraduationCap,
+  CalendarDays,
 } from 'lucide-react'
 import { useAuthStore } from '../store/useAuthStore'
 
@@ -18,16 +26,18 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
 
   const links = [
-    {
-      name: 'Dashboard',
-      icon: <LayoutDashboard className="w-5 h-5" />,
-      path: '/',
-    },
-    {
-      name: 'Submissions',
-      icon: <FileText className="w-5 h-5" />,
-      path: '/submissions',
-    },
+    { name: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" />, path: '/' },
+    { name: 'Submissions', icon: <FileText className="w-5 h-5" />, path: '/submissions' },
+    { name: 'Funding', icon: <DollarSign className="w-5 h-5" />, path: '/funding' },
+    // { name: 'Sessions & Events', icon: <CalendarCheck className="w-5 h-5" />, path: '/sessions' },
+    { name: 'Training', icon: <GraduationCap className="w-5 h-5" />, path: '/sessions/training' },
+    { name: 'Events', icon: <CalendarDays className="w-5 h-5" />, path: '/sessions/events' },
+    { name: 'Progress Tracker', icon: <TrendingUp className="w-5 h-5" />, path: '/progress' },
+    { name: 'Mentor Feedback', icon: <MessageSquareText className="w-5 h-5" />, path: '/feedback' },
+    { name: 'Resources', icon: <BookOpen className="w-5 h-5" />, path: '/resources' },
+    { name: 'Profile', icon: <User className="w-5 h-5" />, path: '/profile' },
+    { name: 'Messages', icon: <MessageSquareText className="w-5 h-5" />, path: '/chats' },
+    { name: 'Help', icon: <HelpCircle className="w-5 h-5" />, path: '/help' },
   ]
 
   const handleLogout = () => {
@@ -68,6 +78,7 @@ export default function Sidebar() {
               </button>
             </div>
 
+            {/* Navigation Links */}
             <nav className="space-y-2">
               {links.map(link => (
                 <Link
@@ -87,6 +98,7 @@ export default function Sidebar() {
             </nav>
           </div>
 
+          {/* Logout */}
           <button
             onClick={handleLogout}
             className="flex items-center gap-3 px-4 py-2 rounded-lg text-dangerColor font-medium hover:bg-dangerColor hover:text-white cursor-pointer"
