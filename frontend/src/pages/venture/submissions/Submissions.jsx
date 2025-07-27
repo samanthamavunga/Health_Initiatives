@@ -1,69 +1,113 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import VentureLayout from '../../../layouts/VentureLayout'
+import {
+  FileText,
+  MessageCircle,
+  FolderOpen,
+  BarChart2,
+} from 'lucide-react'
 
-const dummySubmissions = [
+// Simulated summary data
+const submissionData = {
+  Budgets: {
+    count: 4,
+    statuses: {
+      Approved: 2,
+      Pending: 1,
+      Rejected: 1,
+    },
+  },
+  'Expense Reports': {
+    count: 3,
+    statuses: {
+      Approved: 2,
+      Pending: 1,
+    },
+  },
+  'Receipts & Invoices': {
+    count: 5,
+    statuses: {
+      Approved: 4,
+      Rejected: 1,
+    },
+  },
+  'Business Documentation': {
+    count: 2,
+    statuses: {
+      Pending: 2,
+    },
+  },
+}
+
+const submissionCategories = [
   {
-    id: 1,
-    title: 'Budget for Tranche 1',
-    type: 'Budget',
-    date: '2025-07-10',
-    status: 'Pending',
-    comment: 'Awaiting approval from mentor.',
+    title: 'Budgets',
+    description: 'Submit financial plans for upcoming periods.',
+    icon: <FileText className="w-6 h-6 text-primaryColor" />,
+    route: '/submissions/budgets',
   },
   {
-    id: 2,
-    title: 'Receipts for Supplies',
-    type: 'Receipt',
-    date: '2025-07-06',
-    status: 'Approved',
-    comment: 'Checked and validated.',
+    title: 'Expense Reports',
+    description: 'Upload detailed expense reports for verification.',
+    icon: <FolderOpen className="w-6 h-6 text-primaryColor" />,
+    route: '/submissions/expenses',
   },
   {
-    id: 3,
-    title: 'Pitch Deck',
-    type: 'Document',
-    date: '2025-06-30',
-    status: 'Declined',
-    comment: 'Please revise format and resubmit.',
+    title: 'Receipts & Invoices',
+    description: 'Provide receipts for funding tranche validation.',
+    icon: <MessageCircle className="w-6 h-6 text-primaryColor" />,
+    route: '/submissions/receipts',
+  },
+  {
+    title: 'Business Documentation',
+    description: 'Attach pitch decks, reports, or drive links.',
+    icon: <BarChart2 className="w-6 h-6 text-primaryColor" />,
+    route: '/submissions/documents',
   },
 ]
 
 export default function Submissions() {
+  const navigate = useNavigate()
+
   return (
     <VentureLayout>
-      <div className="p-6 max-w-5xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-primaryColor">Your Submissions</h1>
+      <div className="p-6 max-w-6xl mx-auto">
+        <h1 className="text-2xl font-bold text-primaryColor mb-8 flex items-center gap-2">
+          <FileText className="w-6 h-6" /> Submissions
+        </h1>
 
-        <div className="space-y-4">
-          {dummySubmissions.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white rounded-xl p-4 border border-gray-200 hover:shadow transition"
-            >
-              <div className="flex items-center justify-between mb-1">
-                <div>
-                  <h2 className="font-semibold">{item.title}</h2>
-                  <p className="text-sm text-grayColor-light">
-                    {item.type} • Submitted on {item.date}
-                  </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {submissionCategories.map((cat) => {
+            const summary = submissionData[cat.title] || { count: 0, statuses: {} }
+
+            return (
+              <div
+                key={cat.title}
+                onClick={() => navigate(cat.route)}
+                className="bg-white border border-gray-200 hover:border-primaryColor-light transition cursor-pointer rounded-xl p-5 hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  {cat.icon}
+                  <h2 className="text-lg font-semibold text-gray-800">{cat.title}</h2>
                 </div>
-                <span
-                  className={`px-3 py-1 rounded-full text-sm font-medium ${
-                    item.status === 'Approved'
-                      ? 'bg-successColor-light text-successColor-dark'
-                      : item.status === 'Pending'
-                      ? 'bg-secondaryColor-light text-secondaryColor-dark'
-                      : 'bg-dangerColor-light text-dangerColor-dark'
-                  }`}
-                >
-                  {item.status}
-                </span>
+
+                <p className="text-sm text-gray-500 mb-4">{cat.description}</p>
+
+                <div className="text-sm text-gray-700 space-y-1">
+                  <p>
+                    <span className="font-medium">{summary.count}</span> total submissions
+                  </p>
+                  {Object.entries(summary.statuses).map(([status, count]) => (
+                    <p key={status}>
+                      <span className="text-gray-500">{status}:</span>{' '}
+                      <span className="font-medium">{count}</span>
+                    </p>
+                  ))}
+                </div>
               </div>
-              {item.comment && (
-                <p className="mt-2 text-sm italic text-grayColor">{item.comment}</p>
-              )}
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </VentureLayout>
